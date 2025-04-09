@@ -26,7 +26,9 @@ import {
   DollarSignIcon,
   UploadIcon,
   Settings2Icon,
-  FileTextIcon 
+  FileTextIcon,
+  PlusIcon,
+  CheckSquareIcon
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
@@ -68,6 +70,12 @@ const mainMenuItems: MenuItem[] = [
     path: "/bills",
     icon: UploadIcon,
   },
+  {
+    title: "Approvals",
+    path: "/approvals",
+    icon: CheckSquareIcon,
+    adminOnly: true,
+  },
 ];
 
 // Secondary menu items
@@ -85,7 +93,7 @@ const reportMenuItems: MenuItem[] = [
   },
 ];
 
-// Mock user for demonstration
+// Mock user for demonstration - this would come from auth context in a real app
 const user = {
   name: "John Doe",
   email: "john@example.com",
@@ -171,6 +179,37 @@ export const AppSidebar: FC = () => {
                   )}>
                     <Settings2Icon className="h-4 w-4" />
                     <span>Settings</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        {/* Quick Actions */}
+        <SidebarGroup className="mt-4">
+          <SidebarGroupLabel className="text-xs font-semibold">QUICK ACTIONS</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild>
+                  <Link 
+                    to={isAdmin ? "/events/new" : "/expenses/new"} 
+                    className="flex items-center gap-2 bg-primary/10 hover:bg-primary/20 text-primary"
+                  >
+                    <PlusIcon className="h-4 w-4" />
+                    <span>{isAdmin ? "New Event" : "Record Expense"}</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild>
+                  <Link 
+                    to="/bills/upload" 
+                    className="flex items-center gap-2"
+                  >
+                    <UploadIcon className="h-4 w-4" />
+                    <span>Upload Bill</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>

@@ -10,8 +10,17 @@ import LoginPage from "./pages/auth/LoginPage";
 import RegisterPage from "./pages/auth/RegisterPage";
 import DashboardPage from "./pages/dashboard/DashboardPage";
 import EventsPage from "./pages/events/EventsPage";
+import EventsCreate from "./pages/events/EventsCreate";
+import EventDetail from "./pages/events/EventDetail";
+import ExpensesPage from "./pages/expenses/ExpensesPage";
+import ExpensesCreate from "./pages/expenses/ExpensesCreate";
+import AllocationsPage from "./pages/allocations/AllocationsPage";
+import BillsPage from "./pages/bills/BillsPage";
+import BillsUpload from "./pages/bills/BillsUpload";
+import ReportsPage from "./pages/reports/ReportsPage";
+import UsersPage from "./pages/users/UsersPage";
+import SettingsPage from "./pages/settings/SettingsPage";
 import NotFound from "./pages/NotFound";
-// More pages will be imported as they're created
 
 const queryClient = new QueryClient();
 
@@ -31,7 +40,31 @@ const App = () => (
           
           {/* App routes */}
           <Route path="/dashboard" element={<DashboardPage />} />
+          
+          {/* Events routes */}
           <Route path="/events" element={<EventsPage />} />
+          <Route path="/events/new" element={<EventsCreate />} />
+          <Route path="/events/:id" element={<EventDetail />} />
+          
+          {/* Expenses routes */}
+          <Route path="/expenses" element={<ExpensesPage />} />
+          <Route path="/expenses/new" element={<ExpensesCreate />} />
+          
+          {/* Allocations route */}
+          <Route path="/allocations" element={<AllocationsPage />} />
+          
+          {/* Bills routes */}
+          <Route path="/bills" element={<BillsPage />} />
+          <Route path="/bills/upload" element={<BillsUpload />} />
+          
+          {/* Reports route */}
+          <Route path="/reports" element={<ReportsPage />} />
+          
+          {/* Users management */}
+          <Route path="/users" element={<UsersPage />} />
+          
+          {/* Settings */}
+          <Route path="/settings" element={<SettingsPage />} />
           
           {/* 404 route */}
           <Route path="*" element={<NotFound />} />

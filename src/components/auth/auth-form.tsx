@@ -16,7 +16,9 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { EyeIcon, EyeOffIcon, Loader2Icon } from "lucide-react";
-import { toast } from "@/components/ui/sonner";
+import { toast } from "sonner";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
 
 // Form schemas
 const loginSchema = z.object({
@@ -25,9 +27,14 @@ const loginSchema = z.object({
 });
 
 const registerSchema = z.object({
+  name: z.string().min(2, { message: "Name must be at least 2 characters" }),
   email: z.string().email({ message: "Please enter a valid email address" }),
   password: z.string().min(6, { message: "Password must be at least 6 characters" }),
   confirmPassword: z.string(),
+  phone: z.string().min(10, { message: "Please enter a valid phone number" }).max(15),
+  role: z.enum(["admin", "organizer"], { 
+    required_error: "Please select a role" 
+  }),
 }).refine((data) => data.password === data.confirmPassword, {
   message: "Passwords do not match",
   path: ["confirmPassword"],
@@ -49,11 +56,19 @@ export function AuthForm({ mode }: AuthFormProps) {
   
   const form = useForm<LoginFormValues | RegisterFormValues>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      email: "",
-      password: "",
-      ...(mode === "register" ? { confirmPassword: "" } : {}),
-    },
+    defaultValues: mode === "login" 
+      ? {
+          email: "",
+          password: "",
+        }
+      : {
+          name: "",
+          email: "",
+          password: "",
+          confirmPassword: "",
+          phone: "",
+          role: "organizer",
+        }
   });
 
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
@@ -72,14 +87,18 @@ export function AuthForm({ mode }: AuthFormProps) {
         toast.success("Login successful", {
           description: "Welcome back!",
         });
+        
+        // Check role and redirect accordingly
+        const isAdmin = values.email.includes("admin"); // Mock role check
+        navigate(isAdmin ? "/dashboard" : "/dashboard");
       } else {
         toast.success("Registration successful", {
           description: "Your account has been created.",
         });
+        
+        // Redirect to login
+        navigate("/auth/login");
       }
-      
-      // Redirect to dashboard
-      navigate("/dashboard");
     } catch (error) {
       console.error("Authentication error:", error);
       toast.error(mode === "login" ? "Login failed" : "Registration failed", {
@@ -103,6 +122,22 @@ export function AuthForm({ mode }: AuthFormProps) {
       <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            {mode === "register" && (
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Full Name</FormLabel>
+                    <FormControl>
+                      <Input placeholder="John Doe" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
+            
             <FormField
               control={form.control}
               name="email"
@@ -116,6 +151,7 @@ export function AuthForm({ mode }: AuthFormProps) {
                 </FormItem>
               )}
             />
+            
             <FormField
               control={form.control}
               name="password"
@@ -149,41 +185,94 @@ export function AuthForm({ mode }: AuthFormProps) {
                 </FormItem>
               )}
             />
+            
             {mode === "register" && (
-              <FormField
-                control={form.control}
-                name="confirmPassword"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Confirm Password</FormLabel>
-                    <FormControl>
-                      <div className="relative">
-                        <Input 
-                          placeholder="Confirm your password" 
-                          type={showPassword ? "text" : "password"} 
-                          {...field} 
-                        />
-                        <Button
-                          type="button"
-                          variant="ghost"
-                          size="icon"
-                          className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
-                          onClick={togglePasswordVisibility}
+              <>
+                <FormField
+                  control={form.control}
+                  name="confirmPassword"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Confirm Password</FormLabel>
+                      <FormControl>
+                        <div className="relative">
+                          <Input 
+                            placeholder="Confirm your password" 
+                            type={showPassword ? "text" : "password"} 
+                            {...field} 
+                          />
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="icon"
+                            className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                            onClick={togglePasswordVisibility}
+                          >
+                            {showPassword ? (
+                              <EyeOffIcon className="h-4 w-4 text-muted-foreground" />
+                            ) : (
+                              <EyeIcon className="h-4 w-4 text-muted-foreground" />
+                            )}
+                            <span className="sr-only">Toggle password visibility</span>
+                          </Button>
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                
+                <FormField
+                  control={form.control}
+                  name="phone"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Phone Number</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Your phone number" type="tel" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                
+                <FormField
+                  control={form.control}
+                  name="role"
+                  render={({ field }) => (
+                    <FormItem className="space-y-1">
+                      <FormLabel>Role</FormLabel>
+                      <FormControl>
+                        <RadioGroup
+                          onValueChange={field.onChange}
+                          defaultValue={field.value}
+                          className="flex flex-col space-y-1"
                         >
-                          {showPassword ? (
-                            <EyeOffIcon className="h-4 w-4 text-muted-foreground" />
-                          ) : (
-                            <EyeIcon className="h-4 w-4 text-muted-foreground" />
-                          )}
-                          <span className="sr-only">Toggle password visibility</span>
-                        </Button>
-                      </div>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+                          <div className="flex items-center space-x-2">
+                            <RadioGroupItem value="admin" id="admin" />
+                            <Label htmlFor="admin">Admin</Label>
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <RadioGroupItem value="organizer" id="organizer" />
+                            <Label htmlFor="organizer">Organizer</Label>
+                          </div>
+                        </RadioGroup>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </>
             )}
+            
+            {mode === "login" && (
+              <div className="text-sm text-right">
+                <Button variant="link" className="p-0 h-auto text-xs" onClick={() => toast.info("Enter your email to receive a reset link", { description: "Feature coming soon!" })}>
+                  Forgot password?
+                </Button>
+              </div>
+            )}
+            
             <Button type="submit" className="w-full" disabled={isLoading}>
               {isLoading ? (
                 <>
