@@ -13,6 +13,7 @@ import {
   SidebarGroupContent,
   SidebarGroupLabel,
   SidebarTrigger,
+  useSidebar,
 } from "@/components/ui/sidebar";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { 
@@ -30,6 +31,7 @@ import {
 import { cn } from "@/lib/utils";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface MenuItem {
   title: string;
@@ -93,6 +95,8 @@ const user = {
 
 export const AppSidebar: FC = () => {
   const location = useLocation();
+  const isMobile = useIsMobile();
+  const { state } = useSidebar();
   const isAdmin = user.role === "admin";
 
   return (

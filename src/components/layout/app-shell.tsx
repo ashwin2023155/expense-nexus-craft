@@ -14,7 +14,7 @@ export const AppShell: FC<AppShellProps> = ({ children }) => {
   return (
     <SidebarProvider className="w-full min-h-screen">
       <div className="flex min-h-screen w-full">
-        <AppSidebar collapsed={isMobile} />
+        <AppSidebar />
         <main className="flex-1 overflow-auto p-4 md:p-6 animate-in">
           {children}
         </main>
