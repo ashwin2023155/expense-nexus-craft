@@ -19,11 +19,15 @@ import { EyeIcon, EyeOffIcon, Loader2Icon } from "lucide-react";
 import { toast } from "sonner";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 // Form schemas
 const loginSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email address" }),
   password: z.string().min(6, { message: "Password must be at least 6 characters" }),
+  role: z.enum(["admin", "organizer"], { 
+    required_error: "Please select a role" 
+  }),
 });
 
 const registerSchema = z.object({
@@ -60,6 +64,7 @@ export function AuthForm({ mode }: AuthFormProps) {
       ? {
           email: "",
           password: "",
+          role: "organizer",
         }
       : {
           name: "",
@@ -84,13 +89,13 @@ export function AuthForm({ mode }: AuthFormProps) {
       
       // Simulate successful login/registration
       if (mode === "login") {
+        const loginValues = values as LoginFormValues;
         toast.success("Login successful", {
-          description: "Welcome back!",
+          description: `Welcome back, ${loginValues.role === "admin" ? "Admin" : "Organizer"}!`,
         });
         
-        // Check role and redirect accordingly
-        const isAdmin = values.email.includes("admin"); // Mock role check
-        navigate(isAdmin ? "/dashboard" : "/dashboard");
+        // Redirect based on role
+        navigate("/dashboard");
       } else {
         toast.success("Registration successful", {
           description: "Your account has been created.",
@@ -122,6 +127,25 @@ export function AuthForm({ mode }: AuthFormProps) {
       <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            {mode === "login" && (
+              <Tabs defaultValue="organizer" className="w-full mb-4">
+                <TabsList className="grid w-full grid-cols-2">
+                  <TabsTrigger 
+                    value="organizer" 
+                    onClick={() => form.setValue("role", "organizer")}
+                  >
+                    Organizer
+                  </TabsTrigger>
+                  <TabsTrigger 
+                    value="admin" 
+                    onClick={() => form.setValue("role", "admin")}
+                  >
+                    Admin
+                  </TabsTrigger>
+                </TabsList>
+              </Tabs>
+            )}
+            
             {mode === "register" && (
               <FormField
                 control={form.control}

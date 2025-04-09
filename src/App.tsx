@@ -15,7 +15,7 @@ import EventDetail from "./pages/events/EventDetail";
 // Placeholder imports - these pages need to be created
 // import ExpensesPage from "./pages/expenses/ExpensesPage";
 import ExpensesCreate from "./pages/expenses/ExpensesCreate";
-// import AllocationsPage from "./pages/allocations/AllocationsPage";
+import AllocationsPage from "./pages/allocations/AllocationsPage";
 // import BillsPage from "./pages/bills/BillsPage";
 import BillsUpload from "./pages/bills/BillsUpload";
 // import ReportsPage from "./pages/reports/ReportsPage";
@@ -53,8 +53,7 @@ const App = () => (
           <Route path="/expenses/new" element={<ExpensesCreate />} />
           
           {/* Allocations route */}
-          {/* Route temporarily disabled until AllocationsPage is created */}
-          {/* <Route path="/allocations" element={<AllocationsPage />} /> */}
+          <Route path="/allocations" element={<AllocationsPage />} />
           
           {/* Bills routes */}
           {/* Route temporarily disabled until BillsPage is created */}
