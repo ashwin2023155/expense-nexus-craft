@@ -12,14 +12,15 @@ import DashboardPage from "./pages/dashboard/DashboardPage";
 import EventsPage from "./pages/events/EventsPage";
 import EventsCreate from "./pages/events/EventsCreate";
 import EventDetail from "./pages/events/EventDetail";
-import ExpensesPage from "./pages/expenses/ExpensesPage";
+// Placeholder imports - these pages need to be created
+// import ExpensesPage from "./pages/expenses/ExpensesPage";
 import ExpensesCreate from "./pages/expenses/ExpensesCreate";
-import AllocationsPage from "./pages/allocations/AllocationsPage";
-import BillsPage from "./pages/bills/BillsPage";
+// import AllocationsPage from "./pages/allocations/AllocationsPage";
+// import BillsPage from "./pages/bills/BillsPage";
 import BillsUpload from "./pages/bills/BillsUpload";
-import ReportsPage from "./pages/reports/ReportsPage";
-import UsersPage from "./pages/users/UsersPage";
-import SettingsPage from "./pages/settings/SettingsPage";
+// import ReportsPage from "./pages/reports/ReportsPage";
+// import UsersPage from "./pages/users/UsersPage";
+// import SettingsPage from "./pages/settings/SettingsPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -47,24 +48,30 @@ const App = () => (
           <Route path="/events/:id" element={<EventDetail />} />
           
           {/* Expenses routes */}
-          <Route path="/expenses" element={<ExpensesPage />} />
+          {/* Route temporarily disabled until ExpensesPage is created */}
+          {/* <Route path="/expenses" element={<ExpensesPage />} /> */}
           <Route path="/expenses/new" element={<ExpensesCreate />} />
           
           {/* Allocations route */}
-          <Route path="/allocations" element={<AllocationsPage />} />
+          {/* Route temporarily disabled until AllocationsPage is created */}
+          {/* <Route path="/allocations" element={<AllocationsPage />} /> */}
           
           {/* Bills routes */}
-          <Route path="/bills" element={<BillsPage />} />
+          {/* Route temporarily disabled until BillsPage is created */}
+          {/* <Route path="/bills" element={<BillsPage />} /> */}
           <Route path="/bills/upload" element={<BillsUpload />} />
           
           {/* Reports route */}
-          <Route path="/reports" element={<ReportsPage />} />
+          {/* Route temporarily disabled until ReportsPage is created */}
+          {/* <Route path="/reports" element={<ReportsPage />} /> */}
           
           {/* Users management */}
-          <Route path="/users" element={<UsersPage />} />
+          {/* Route temporarily disabled until UsersPage is created */}
+          {/* <Route path="/users" element={<UsersPage />} /> */}
           
           {/* Settings */}
-          <Route path="/settings" element={<SettingsPage />} />
+          {/* Route temporarily disabled until SettingsPage is created */}
+          {/* <Route path="/settings" element={<SettingsPage />} /> */}
           
           {/* 404 route */}
           <Route path="*" element={<NotFound />} />
