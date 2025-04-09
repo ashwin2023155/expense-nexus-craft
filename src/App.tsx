@@ -12,12 +12,12 @@ import DashboardPage from "./pages/dashboard/DashboardPage";
 import EventsPage from "./pages/events/EventsPage";
 import EventsCreate from "./pages/events/EventsCreate";
 import EventDetail from "./pages/events/EventDetail";
-// Placeholder imports - these pages need to be created
-// import ExpensesPage from "./pages/expenses/ExpensesPage";
+import ExpensesPage from "./pages/expenses/ExpensesPage";
 import ExpensesCreate from "./pages/expenses/ExpensesCreate";
 import AllocationsPage from "./pages/allocations/AllocationsPage";
-// import BillsPage from "./pages/bills/BillsPage";
+import BillsPage from "./pages/bills/BillsPage";
 import BillsUpload from "./pages/bills/BillsUpload";
+// Import these pages when they're created
 // import ReportsPage from "./pages/reports/ReportsPage";
 // import UsersPage from "./pages/users/UsersPage";
 // import SettingsPage from "./pages/settings/SettingsPage";
@@ -48,16 +48,14 @@ const App = () => (
           <Route path="/events/:id" element={<EventDetail />} />
           
           {/* Expenses routes */}
-          {/* Route temporarily disabled until ExpensesPage is created */}
-          {/* <Route path="/expenses" element={<ExpensesPage />} /> */}
+          <Route path="/expenses" element={<ExpensesPage />} />
           <Route path="/expenses/new" element={<ExpensesCreate />} />
           
           {/* Allocations route */}
           <Route path="/allocations" element={<AllocationsPage />} />
           
           {/* Bills routes */}
-          {/* Route temporarily disabled until BillsPage is created */}
-          {/* <Route path="/bills" element={<BillsPage />} /> */}
+          <Route path="/bills" element={<BillsPage />} />
           <Route path="/bills/upload" element={<BillsUpload />} />
           
           {/* Reports route */}
